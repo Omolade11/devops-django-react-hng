@@ -1,16 +1,21 @@
-version: '2'
-services:
-  api:
-    build: ./api        
-    ports:
-      - "8008:8008"
-    volumes:
-      - ./api:/api
-    command: bash -c "python manage.py runserver 0.0.0.0:8008"
+version: "3"
 
-  web:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/frontend
+services:
+    frontend:
+        image: omoladeomolade/react-frontend:latest
+        container_name: frontendpage
+        ports:
+          - 3000:3000
+        depends_on:
+          - backend
+
+    backend:
+        image: omoladeomolade/django-backend:latest
+        container_name: backend
+        command: python manage.py runserver 0.0.0.0:8008
+        ports:
+            - "8008:8008"
+networks:
+  default:
+  name:
+  external:
